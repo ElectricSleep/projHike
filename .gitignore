@@ -53,6 +53,7 @@ dist/
 build/
 
 # Pipenv / Poetry
+_old requirements.txt
 Pipfile.lock
 poetry.lock
 
