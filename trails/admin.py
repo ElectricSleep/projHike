@@ -1,4 +1,5 @@
 from django.contrib import admin
+from leaflet.admin import LeafletGeoAdmin
 from .models import Region, Trailhead, Trail
 
 # Inline for managing Trails inside Trailhead admin
@@ -9,13 +10,13 @@ class TrailInline(admin.TabularInline):  # or use StackedInline for more detail
     show_change_link = True
 
 @admin.register(Region)
-class RegionAdmin(admin.ModelAdmin):
+class RegionAdmin(LeafletGeoAdmin):
     list_display = ('name', 'slug')
     prepopulated_fields = {'slug': ('name',)}
     search_fields = ('name',)
 
 @admin.register(Trailhead)
-class TrailheadAdmin(admin.ModelAdmin):
+class TrailheadAdmin(LeafletGeoAdmin):
     list_display = ('name', 'slug', 'region', 'archived')
     list_filter = ('region', 'archived')
     search_fields = ('name',)
