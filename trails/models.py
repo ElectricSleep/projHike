@@ -12,7 +12,7 @@ class Placeholder(models.Model):
 
 class Region(models.Model):
     name = models.CharField(max_length=100, unique=True)
-    slug = models.SlugField(unique=True)
+    slug = models.SlugField(max_length=100, unique=True)
     description = models.TextField(blank=True)
     geometry = gis_models.MultiPolygonField(null=True, blank=True)
 
@@ -21,12 +21,14 @@ class Region(models.Model):
 
 
 class Trailhead(models.Model):
-    name = models.CharField(max_length=150)
-    slug = models.SlugField(unique=True)
-    location = gis_models.PointField()
+    name = models.CharField(max_length=200)
+    slug = models.SlugField(max_length=100, unique=True)
+    location = gis_models.PointField(geography=True, null=True, blank=True)
+    elevation = models.IntegerField(null=True, blank=True)
     description = models.TextField(blank=True)
-    region = models.ForeignKey(Region, on_delete=models.CASCADE, related_name="trailheads")
+    region = models.ForeignKey(Region, on_delete=models.CASCADE, related_name="trailheads", null=True, blank=True)
     archived = models.BooleanField(default=False)
+    verified = models.BooleanField(default=False)
 
     def __str__(self):
         return self.name
@@ -46,14 +48,15 @@ class Trail(models.Model):
     ]
 
     name = models.CharField(max_length=200)
-    slug = models.SlugField(unique=True)
+    slug = models.SlugField(max_length=100, unique=True)
     trailhead = models.ForeignKey(Trailhead, on_delete=models.CASCADE, related_name="trails")
     distance_miles = models.DecimalField(max_digits=5, decimal_places=2)
-    difficulty = models.CharField(max_length=10, choices=DIFFICULTY_CHOICES)
-    trail_type = models.CharField(max_length=20, choices=TRAIL_TYPE_CHOICES)
-    status = models.CharField(max_length=20, default="open")
+    difficulty = models.CharField(max_length=200, choices=DIFFICULTY_CHOICES)
+    trail_type = models.CharField(max_length=400, choices=TRAIL_TYPE_CHOICES)
+    status = models.CharField(max_length=400, default="open")
     description = models.TextField(blank=True)
     archived = models.BooleanField(default=False)
+    verified = models.BooleanField(default=False)
 
     def __str__(self):
         return self.name

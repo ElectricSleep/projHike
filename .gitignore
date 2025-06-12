@@ -59,6 +59,8 @@ poetry.lock
 
 # Secrets and credentials
 notes.md
+helperscripts/
+/trails/management/commands/
 cspell.config.yaml
 .env
 .env.*
