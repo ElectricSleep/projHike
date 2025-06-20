@@ -33,9 +33,19 @@ class TrailInline(admin.TabularInline):
 
 @admin.register(Region)
 class RegionAdmin(LeafletGeoAdmin):
-    list_display = ('name', 'slug')
-    prepopulated_fields = {'slug': ('name',)}
+    list_display = ('name', 'slug', 'is_group_display', 'parent')
+    list_filter = ('parent',)
+    ordering = ('name',)
     search_fields = ('name',)
+
+    def is_group_display(self, obj):
+        return obj.is_group()
+    is_group_display.boolean = True
+    is_group_display.short_description = 'Grouped Region?'
+
+    def get_queryset(self, request):
+        qs = super().get_queryset(request)
+        return qs.select_related('parent')
 
 @admin.register(Trailhead)
 class TrailheadAdmin(LeafletGeoAdmin):

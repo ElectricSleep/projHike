@@ -135,4 +135,27 @@ LEAFLET_CONFIG = {
     'MIN_ZOOM': 5,
     'MAX_ZOOM': 18,
     'TILES': 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+
+    # Enable plugins (optional but recommended for interaction)
+    'PLUGINS': {
+        'forms': {
+            'auto_include': True,
+        },
+    },
+
+    # Ready for optional overlays (you must generate these)
+    'OVERLAYS': [
+        {
+            'name': 'Grouped Regions',
+            'tiles': '/static/geojson/grouped_regions.geojson',
+            'overlay': True,
+            'visible_by_default': True,
+        },
+        {
+            'name': 'County Regions',
+            'tiles': '/static/geojson/county_regions.geojson',
+            'overlay': True,
+            'visible_by_default': True,
+        },
+    ],
 }
